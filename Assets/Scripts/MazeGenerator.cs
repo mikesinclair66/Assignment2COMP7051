@@ -15,16 +15,24 @@ class MazeSector
 public class MazeGenerator : MonoBehaviour
 {
     const int SIZE = 8;
+    MazeSector[,] sectors = new MazeSector[SIZE, SIZE];
+    GameObject standardWall;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        standardWall = GameObject.Find("Plane/StandardWall");
+        InitSectors();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void InitSectors()
+    {
+
     }
 }
