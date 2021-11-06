@@ -17,6 +17,7 @@ class MazeSector
     bool[] hidden;
     GameObject[] quads;
     GameObject[] mirrorQuads;//quads of the same position facing the other way
+    bool visited = false;
 
     static float sectorSize;
     static int mazeSize;
@@ -157,6 +158,16 @@ class MazeSector
         }
     }
 
+    public void SetVisited(bool visited)
+    {
+        this.visited = visited;
+    }
+
+    public bool IsVisited()
+    {
+        return visited;
+    }
+
     /// <summary>
     /// Sets the sector size or space between each parallel wall
     /// </summary>
@@ -175,7 +186,7 @@ class MazeSector
 
 public class MazeGenerator : MonoBehaviour
 {
-    const int SIZE = 6;//the area of the grid (SIZE X SIZE)
+    const int SIZE = 15;//the area of the grid (SIZE X SIZE)
     MazeSector[,] sectors = new MazeSector[SIZE, SIZE];
     GameObject plane, standardWall;
 
@@ -189,12 +200,8 @@ public class MazeGenerator : MonoBehaviour
         InitSectors();
         standardWall.SetActive(false);
         GeneratePath();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        //sectors[0, 0].SetWallHidden(3, true);
+        //sectors[SIZE - 1, SIZE - 1].SetWallHidden(1, true);
     }
 
     void InitSectors()
@@ -223,5 +230,144 @@ public class MazeGenerator : MonoBehaviour
     {
         sectors[0, 0].SetWallHidden(3, true);
         sectors[SIZE - 1, SIZE - 1].SetWallHidden(1, true);
+
+        System.Random rand = new System.Random();
+        List<int> prevX = new List<int>(),
+            prevY = new List<int>();
+        prevX.Add(-1);
+        prevY.Add(-1);
+        int x = SIZE - 1, y = SIZE - 1;
+        do
+        {
+            if (x == -1 && y == -1)
+                break;
+            sectors[y, x].SetVisited(true);
+            /*Unvisited neighbours, clockwise starting from top
+             * If path is invalid, marked as visited*/
+            bool[] neighbours = { false, false, false, false };
+            if (y == SIZE - 1)
+                neighbours[0] = true;
+            else if (y == 0)
+                neighbours[2] = true;
+            if (x == SIZE - 1)
+                neighbours[1] = true;
+            else if (x == 0)
+                neighbours[3] = true;
+
+            bool visited = true, backtrack = false;
+            int n = -1;
+            while (visited)
+            {
+                n = rand.Next(0, 4);
+                if(n == 0 && !neighbours[0])
+                {
+                    if (prevY[prevY.Count - 1] == y + 1)
+                        continue;
+                    visited = sectors[y + 1, x].IsVisited();
+                    if (visited)
+                    {
+                        if ((neighbours[0] || sectors[y + 1, x].IsVisited())
+                            && (neighbours[1] || sectors[y, x + 1].IsVisited())
+                            && (neighbours[2] || sectors[y - 1, x].IsVisited())
+                            && (neighbours[3] || sectors[y, x - 1].IsVisited()))
+                        {
+                            backtrack = true;
+                            break;
+                        }
+                    }
+                }
+                else if(n == 2 && !neighbours[2])
+                {
+                    if (prevY[prevY.Count - 1] == y - 1)
+                        continue;
+                    visited = sectors[y - 1, x].IsVisited();
+                    if (visited)
+                    {
+                        if ((neighbours[0] || sectors[y + 1, x].IsVisited())
+                            && (neighbours[1] || sectors[y, x + 1].IsVisited())
+                            && (neighbours[2] || sectors[y - 1, x].IsVisited())
+                            && (neighbours[3] || sectors[y, x - 1].IsVisited()))
+                        {
+                            backtrack = true;
+                            break;
+                        }
+                    }
+                }
+                else if(n == 1 && !neighbours[1])
+                {
+                    if (prevX[prevX.Count - 1] == x + 1)
+                        continue;
+                    visited = sectors[y, x + 1].IsVisited();
+                    if (visited)
+                    {
+                        if ((neighbours[0] || sectors[y + 1, x].IsVisited())
+                            && (neighbours[1] || sectors[y, x + 1].IsVisited())
+                            && (neighbours[2] || sectors[y - 1, x].IsVisited())
+                            && (neighbours[3] || sectors[y, x - 1].IsVisited()))
+                        {
+                            backtrack = true;
+                            break;
+                        }
+                    }
+                }
+                else if(n == 3 && !neighbours[3])
+                {
+                    if (prevX[prevX.Count - 1] == x - 1)
+                        continue;
+                    visited = sectors[y, x - 1].IsVisited();
+                    if (visited)
+                    {
+                        if ((neighbours[0] || sectors[y + 1, x].IsVisited())
+                            && (neighbours[1] || sectors[y, x + 1].IsVisited())
+                            && (neighbours[2] || sectors[y - 1, x].IsVisited())
+                            && (neighbours[3] || sectors[y, x - 1].IsVisited()))
+                        {
+                            backtrack = true;
+                            break;
+                        }
+                    }
+                }
+                //ELSE GO BACK TO PREVIOUS
+                else if(prevX[prevX.Count - 1] != -1 && prevY[prevY.Count - 1] != -1)
+                {
+                    if ((!neighbours[0] && !sectors[y + 1, x].IsVisited())
+                        || (!neighbours[1] && !sectors[y, x + 1].IsVisited())
+                        || (!neighbours[2] && !sectors[y - 1, x].IsVisited())
+                        || (!neighbours[3] && !sectors[y, x - 1].IsVisited()))
+                        continue;
+
+                    backtrack = true;
+                    break;
+                }
+                else if(prevX[prevX.Count - 1] == -1 && prevY[prevY.Count - 1] == -1
+                    && sectors[SIZE - 2, SIZE - 1].IsVisited() && sectors[SIZE - 1, SIZE - 2].IsVisited())
+                {
+                    backtrack = true;
+                    break;
+                }
+            }
+
+            if (backtrack)
+            {
+                int lastIndex = prevX.Count - 1;
+                x = prevX[lastIndex];
+                y = prevY[lastIndex];
+                prevX.RemoveAt(lastIndex);
+                prevY.RemoveAt(lastIndex);
+                continue;
+            }
+
+            prevX.Add(x);
+            prevY.Add(y);
+            if (n == 0)
+                sectors[y++, x].SetWallHidden(0, true);
+            else if (n == 2)
+                sectors[--y, x].SetWallHidden(0, true);
+            else if (n == 1)
+                sectors[y, x++].SetWallHidden(1, true);
+            else if (n == 3)
+                sectors[y, --x].SetWallHidden(1, true);
+        } while (x != SIZE - 1 || y != SIZE - 1 ||
+            !sectors[SIZE - 2, SIZE - 1].IsVisited() || !sectors[SIZE - 1, SIZE - 2].IsVisited());
     }
 }
