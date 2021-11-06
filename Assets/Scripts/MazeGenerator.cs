@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,34 +6,368 @@ using UnityEngine;
 class MazeSector
 {
     /*
+     * type indicates the walls of the sector, respectively starting from the top
+     * and going clockwise.
      * 0 - 4 walls
-     * 1 - 3 walls (blank at top)
+     * 1 - 3 walls (blank at bottom)
      * 2 - 3 walls (blank at left)
-     * 3 - 2 walls (blank at top and left)
+     * 3 - 2 walls (blank at bottom and left)
      */
+    int type;
+    bool[] hidden;
+    GameObject[] quads;
+    GameObject[] mirrorQuads;//quads of the same position facing the other way
+    bool visited = false;
+
+    static float sectorSize;
+    static int mazeSize;
+
+    public MazeSector(int type, GameObject quad,
+        float xOffset, float yOffset)
+    {
+        if (type < 0 || type > 3)
+            throw new ArgumentException("type is out of range.");
+
+        this.type = type;
+        int quadAmount;
+        switch (type)
+        {
+            case 0:
+                quadAmount = 4;
+                break;
+            case 1:
+            case 2:
+                quadAmount = 3;
+                break;
+            case 3:
+            default:
+                quadAmount = 2;
+                break;
+        }
+
+        hidden = new bool[quadAmount];
+        quads = new GameObject[quadAmount];
+        mirrorQuads = new GameObject[quadAmount];
+        float startX = ((mazeSize % 2 == 0) ? sectorSize / 2 : 0);
+        for(int i = 0; i < quadAmount; i++)
+        {
+            hidden[i] = false;
+            quads[i] = GameObject.Instantiate(quad, quad.gameObject.transform.position, quad.gameObject.transform.rotation);
+            quads[i].gameObject.transform.localScale = new Vector3(sectorSize,
+                quad.gameObject.transform.localScale.y, 1);
+            quads[i].gameObject.transform.position = quads[i].gameObject.transform.position +
+                new Vector3(startX + xOffset * sectorSize, 0, startX + yOffset * sectorSize);
+
+            mirrorQuads[i] = GameObject.Instantiate(quad, quad.gameObject.transform.position, quad.gameObject.transform.rotation);
+            mirrorQuads[i].gameObject.transform.localScale = new Vector3(sectorSize,
+                quad.gameObject.transform.localScale.y, 1);
+            //leave mirrorQuads positioning for the following
+        }
+
+        //position the walls relative to its sector point
+        if(type == 0)
+        {
+            quads[0].gameObject.transform.position = quads[0].gameObject.transform.position +
+                new Vector3(0, 0, sectorSize / 2);
+            quads[1].gameObject.transform.Rotate(0, -90, 0);
+            quads[1].gameObject.transform.position = quads[1].gameObject.transform.position +
+                new Vector3(sectorSize / 2, 0, 0);
+            quads[2].gameObject.transform.position = quads[2].gameObject.transform.position +
+                new Vector3(0, 0, -sectorSize / 2);
+            quads[3].gameObject.transform.Rotate(0, -90, 0);
+            quads[3].gameObject.transform.position = quads[3].gameObject.transform.position +
+                new Vector3(-sectorSize / 2, 0, 0);
+
+            mirrorQuads[0].gameObject.transform.Rotate(0, 0, 180);
+            mirrorQuads[1].gameObject.transform.Rotate(0, 90, 0);
+            mirrorQuads[2].gameObject.transform.Rotate(0, 0, 180);
+            mirrorQuads[3].gameObject.transform.Rotate(0, 90, 0);
+        }
+        else if(type == 1)
+        {
+            quads[0].gameObject.transform.position = quads[0].gameObject.transform.position +
+                new Vector3(0, 0, sectorSize / 2);
+            quads[1].gameObject.transform.Rotate(0, -90, 0);
+            quads[1].gameObject.transform.position = quads[1].gameObject.transform.position +
+                new Vector3(sectorSize / 2, 0, 0);
+            quads[2].gameObject.transform.Rotate(0, -90, 0);
+            quads[2].gameObject.transform.position = quads[2].gameObject.transform.position +
+                new Vector3(-sectorSize / 2, 0, 0);
+
+            mirrorQuads[0].gameObject.transform.Rotate(0, 0, 180);
+            mirrorQuads[1].gameObject.transform.Rotate(0, 90, 0);
+            mirrorQuads[2].gameObject.transform.Rotate(0, 90, 0);
+        }
+        else if(type == 2)
+        {
+            quads[0].gameObject.transform.position = quads[0].gameObject.transform.position +
+                new Vector3(0, 0, sectorSize / 2);
+            quads[1].gameObject.transform.Rotate(0, -90, 0);
+            quads[1].gameObject.transform.position = quads[1].gameObject.transform.position +
+                new Vector3(sectorSize / 2, 0, 0);
+            quads[2].gameObject.transform.position = quads[2].gameObject.transform.position +
+                new Vector3(0, 0, -sectorSize / 2);
+
+            mirrorQuads[0].gameObject.transform.Rotate(0, 0, 180);
+            mirrorQuads[1].gameObject.transform.Rotate(0, 90, 0);
+            mirrorQuads[2].gameObject.transform.Rotate(0, 0, 180);
+        }
+        else
+        {
+            quads[0].gameObject.transform.position = quads[0].gameObject.transform.position +
+                new Vector3(0, 0, sectorSize / 2);
+            quads[1].gameObject.transform.Rotate(0, -90, 0);
+            quads[1].gameObject.transform.position = quads[1].gameObject.transform.position +
+                new Vector3(sectorSize / 2, 0, 0);
+
+            mirrorQuads[0].gameObject.transform.Rotate(0, 0, 180);
+            mirrorQuads[1].gameObject.transform.Rotate(0, 90, 0);
+        }
+
+        for (int i = 0; i < quadAmount; i++)
+            mirrorQuads[i].gameObject.transform.position = quads[i].gameObject.transform.position;
+    }
+
+    /// <summary>
+    /// Sets whether the specifie wall is hidden based on the sector type.
+    /// </summary>
+    /// <param name="index"></param>
+    public void SetWallHidden(int index, bool isHidden)
+    {
+        string err = "Index is out of range for the respective sector type.";
+        hidden[index] = isHidden;
+        quads[index].SetActive(!isHidden);
+        mirrorQuads[index].SetActive(!isHidden);
+
+        switch (type)
+        {
+            case 0:
+                if (index < 0 || index > 3)
+                    throw new ArgumentException(err);
+                break;
+            case 1:
+            case 2:
+                if(index < 0 || index > 2)
+                    throw new ArgumentException(err);
+                break;
+            case 3:
+            default:
+                if(index < 0 || index > 1)
+                    throw new ArgumentException(err);
+                break;
+        }
+    }
+
+    public void SetVisited(bool visited)
+    {
+        this.visited = visited;
+    }
+
+    public bool IsVisited()
+    {
+        return visited;
+    }
+
+    /// <summary>
+    /// Sets the sector size or space between each parallel wall
+    /// </summary>
+    /// <param name="sectorSize"></param>
+    public static void SetSectorSize(float sectorSize)
+    {
+        MazeSector.sectorSize = sectorSize;
+        //Debug.Log("Sector size: " + sectorSize);
+    }
+
+    public static void SetMazeSize(int mazeSize)
+    {
+        MazeSector.mazeSize = mazeSize;
+    }
 }
 
 public class MazeGenerator : MonoBehaviour
 {
-    const int SIZE = 8;
+    const int SIZE = 15;//the area of the grid (SIZE X SIZE)
     MazeSector[,] sectors = new MazeSector[SIZE, SIZE];
-    GameObject standardWall;
+    GameObject plane, standardWall;
 
     // Start is called before the first frame update
     void Start()
     {
+        plane = GameObject.Find("Plane");
         standardWall = GameObject.Find("Plane/StandardWall");
+        MazeSector.SetSectorSize(10.0f * plane.gameObject.transform.localScale.x / (float)SIZE);
+        MazeSector.SetMazeSize(SIZE);
         InitSectors();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        standardWall.SetActive(false);
+        GeneratePath();
+        //sectors[0, 0].SetWallHidden(3, true);
+        //sectors[SIZE - 1, SIZE - 1].SetWallHidden(1, true);
     }
 
     void InitSectors()
     {
+        for(int r = 0; r < SIZE; r++)
+        {
+            for(int c = 0; c < SIZE; c++)
+            {
+                int type;
+                if (r > 0 && c > 0)
+                    type = 3;
+                else if (c > 0)
+                    type = 2;
+                else if (r > 0 && c == 0)
+                    type = 1;
+                else
+                    type = 0;
 
+                sectors[r, c] = new MazeSector(type, standardWall,
+                    c - SIZE / 2, r - SIZE / 2);
+            }
+        }
+    }
+
+    void GeneratePath()
+    {
+        sectors[0, 0].SetWallHidden(3, true);
+        sectors[SIZE - 1, SIZE - 1].SetWallHidden(1, true);
+
+        System.Random rand = new System.Random();
+        List<int> prevX = new List<int>(),
+            prevY = new List<int>();
+        prevX.Add(-1);
+        prevY.Add(-1);
+        int x = SIZE - 1, y = SIZE - 1;
+        do
+        {
+            if (x == -1 && y == -1)
+                break;
+            sectors[y, x].SetVisited(true);
+            /*Unvisited neighbours, clockwise starting from top
+             * If path is invalid, marked as visited*/
+            bool[] neighbours = { false, false, false, false };
+            if (y == SIZE - 1)
+                neighbours[0] = true;
+            else if (y == 0)
+                neighbours[2] = true;
+            if (x == SIZE - 1)
+                neighbours[1] = true;
+            else if (x == 0)
+                neighbours[3] = true;
+
+            bool visited = true, backtrack = false;
+            int n = -1;
+            while (visited)
+            {
+                n = rand.Next(0, 4);
+                if(n == 0 && !neighbours[0])
+                {
+                    if (prevY[prevY.Count - 1] == y + 1)
+                        continue;
+                    visited = sectors[y + 1, x].IsVisited();
+                    if (visited)
+                    {
+                        if ((neighbours[0] || sectors[y + 1, x].IsVisited())
+                            && (neighbours[1] || sectors[y, x + 1].IsVisited())
+                            && (neighbours[2] || sectors[y - 1, x].IsVisited())
+                            && (neighbours[3] || sectors[y, x - 1].IsVisited()))
+                        {
+                            backtrack = true;
+                            break;
+                        }
+                    }
+                }
+                else if(n == 2 && !neighbours[2])
+                {
+                    if (prevY[prevY.Count - 1] == y - 1)
+                        continue;
+                    visited = sectors[y - 1, x].IsVisited();
+                    if (visited)
+                    {
+                        if ((neighbours[0] || sectors[y + 1, x].IsVisited())
+                            && (neighbours[1] || sectors[y, x + 1].IsVisited())
+                            && (neighbours[2] || sectors[y - 1, x].IsVisited())
+                            && (neighbours[3] || sectors[y, x - 1].IsVisited()))
+                        {
+                            backtrack = true;
+                            break;
+                        }
+                    }
+                }
+                else if(n == 1 && !neighbours[1])
+                {
+                    if (prevX[prevX.Count - 1] == x + 1)
+                        continue;
+                    visited = sectors[y, x + 1].IsVisited();
+                    if (visited)
+                    {
+                        if ((neighbours[0] || sectors[y + 1, x].IsVisited())
+                            && (neighbours[1] || sectors[y, x + 1].IsVisited())
+                            && (neighbours[2] || sectors[y - 1, x].IsVisited())
+                            && (neighbours[3] || sectors[y, x - 1].IsVisited()))
+                        {
+                            backtrack = true;
+                            break;
+                        }
+                    }
+                }
+                else if(n == 3 && !neighbours[3])
+                {
+                    if (prevX[prevX.Count - 1] == x - 1)
+                        continue;
+                    visited = sectors[y, x - 1].IsVisited();
+                    if (visited)
+                    {
+                        if ((neighbours[0] || sectors[y + 1, x].IsVisited())
+                            && (neighbours[1] || sectors[y, x + 1].IsVisited())
+                            && (neighbours[2] || sectors[y - 1, x].IsVisited())
+                            && (neighbours[3] || sectors[y, x - 1].IsVisited()))
+                        {
+                            backtrack = true;
+                            break;
+                        }
+                    }
+                }
+                //ELSE GO BACK TO PREVIOUS
+                else if(prevX[prevX.Count - 1] != -1 && prevY[prevY.Count - 1] != -1)
+                {
+                    if ((!neighbours[0] && !sectors[y + 1, x].IsVisited())
+                        || (!neighbours[1] && !sectors[y, x + 1].IsVisited())
+                        || (!neighbours[2] && !sectors[y - 1, x].IsVisited())
+                        || (!neighbours[3] && !sectors[y, x - 1].IsVisited()))
+                        continue;
+
+                    backtrack = true;
+                    break;
+                }
+                else if(prevX[prevX.Count - 1] == -1 && prevY[prevY.Count - 1] == -1
+                    && sectors[SIZE - 2, SIZE - 1].IsVisited() && sectors[SIZE - 1, SIZE - 2].IsVisited())
+                {
+                    backtrack = true;
+                    break;
+                }
+            }
+
+            if (backtrack)
+            {
+                int lastIndex = prevX.Count - 1;
+                x = prevX[lastIndex];
+                y = prevY[lastIndex];
+                prevX.RemoveAt(lastIndex);
+                prevY.RemoveAt(lastIndex);
+                continue;
+            }
+
+            prevX.Add(x);
+            prevY.Add(y);
+            if (n == 0)
+                sectors[y++, x].SetWallHidden(0, true);
+            else if (n == 2)
+                sectors[--y, x].SetWallHidden(0, true);
+            else if (n == 1)
+                sectors[y, x++].SetWallHidden(1, true);
+            else if (n == 3)
+                sectors[y, --x].SetWallHidden(1, true);
+        } while (x != SIZE - 1 || y != SIZE - 1 ||
+            !sectors[SIZE - 2, SIZE - 1].IsVisited() || !sectors[SIZE - 1, SIZE - 2].IsVisited());
     }
 }
