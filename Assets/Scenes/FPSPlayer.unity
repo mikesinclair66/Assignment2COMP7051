@@ -423,6 +423,7 @@ GameObject:
   - component: {fileID: 1233881944}
   - component: {fileID: 1233881946}
   - component: {fileID: 1233881947}
+  - component: {fileID: 1233881948}
   m_Layer: 0
   m_Name: First Person Player
   m_TagString: Untagged
@@ -439,7 +440,7 @@ CharacterController:
   m_GameObject: {fileID: 1233881943}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Height: 3.8
   m_Radius: 0.6
@@ -471,7 +472,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1233881943}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f32aac8e19db57b47847a4fa93de5409, type: 3}
   m_Name: 
@@ -490,6 +491,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   controller: {fileID: 1233881944}
   canCollide: 1
+  walls: []
+--- !u!114 &1233881948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1233881943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ae77864c7d09b345ae69826fa60a7d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controller: {fileID: 1233881944}
+  speed: 12
 --- !u!1 &1463333991
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,7 +521,7 @@ GameObject:
   - component: {fileID: 1463333996}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
