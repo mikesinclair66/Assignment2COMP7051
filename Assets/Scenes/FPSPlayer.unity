@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -316,7 +316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cabc46eb860b60446afbd5c3263a9136, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 100
+  mouseSensitivity: 400
   playerBody: {fileID: 1233881945}
 --- !u!1 &1175998640
 GameObject:
@@ -439,7 +439,7 @@ CharacterController:
   m_GameObject: {fileID: 1233881943}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Height: 3.8
   m_Radius: 0.6
@@ -476,8 +476,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f32aac8e19db57b47847a4fa93de5409, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controller: {fileID: 1233881944}
-  speed: 12
 --- !u!114 &1233881947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -491,6 +489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controller: {fileID: 1233881944}
+  canCollide: 1
 --- !u!1 &1463333991
 GameObject:
   m_ObjectHideFlags: 0
@@ -615,6 +614,7 @@ GameObject:
   - component: {fileID: 1951724435}
   - component: {fileID: 1951724437}
   - component: {fileID: 1951724436}
+  - component: {fileID: 1951724438}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -686,3 +686,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1951724434}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!136 &1951724438
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1951724434}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.50000006
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.00000005960464, y: 0, z: -0.00000008940696}
