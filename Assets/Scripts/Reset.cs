@@ -11,7 +11,7 @@ public class Reset : MonoBehaviour
 
     private Vector3 playerPosition, enemyPosition;
 
-    private NoClip _noClip;
+    //private NoClip _noClip;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,18 +19,24 @@ public class Reset : MonoBehaviour
         playerRotation = player.transform.rotation;
         enemyPosition = enemy.transform.position;
         enemyRotation = enemy.transform.rotation;
-        _noClip = NoClip.instance;
+
+        Debug.Log("Start Pos: " + playerPosition);
+        Debug.Log("Start Rot: " + playerRotation);
+        //_noClip = NoClip.instance;
     }
 
-    private void FixedUpdate()
+    void Update()
     {
         if (Input.GetKeyDown("home") || Input.GetKeyDown("joystick button 1"))
         {
+            Debug.Log("Reset Pos: " + playerPosition);
+            Debug.Log("Reset Rot: " + playerRotation);
+
             player.transform.position = playerPosition;
             player.transform.rotation = playerRotation;
             enemy.transform.position = enemyPosition;
             enemy.transform.rotation = enemyRotation;
-            _noClip.SetCollision(true);
+            //_noClip.SetCollision(true);
         }
     }
 }
