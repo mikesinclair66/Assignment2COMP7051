@@ -23,9 +23,9 @@
                 },
                 {
                     "name": "Rotate",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "63018bca-7113-4db1-b775-d3f372369f06",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": ""
                 }
@@ -156,6 +156,17 @@
                     "name": "",
                     "id": "a0df260f-ff84-4f0b-8881-3fb1c8d107d2",
                     "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b9ec3152-c97d-4153-bb53-5a1903385a84",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
