@@ -21,7 +21,12 @@ public class NoClip : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyDown("r") || Input.GetKeyDown("joystick button 0"))
+        {
+            canCollide = !canCollide;
+            Debug.Log("Toggled collision. Collision is now " + canCollide);
+            SetCollision(canCollide);
+        }
     }
 
     public void SetCollision(bool canCollide)
@@ -29,15 +34,6 @@ public class NoClip : MonoBehaviour
         foreach (GameObject wall in walls)
         {
             Physics.IgnoreCollision(wall.GetComponent<Collider>(), GetComponent<Collider>(), !canCollide);
-        }
-    }
-
-    void FixedUpdate() {
-        if (Input.GetKeyDown("r") || Input.GetKeyDown("joystick button 0"))
-        {
-            canCollide = !canCollide;
-            Debug.Log("Toggled collision. Collision is now " + canCollide);
-            SetCollision(canCollide);
         }
     }
 }
