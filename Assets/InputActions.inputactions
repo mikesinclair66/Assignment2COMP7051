@@ -14,18 +14,32 @@
                     "interactions": ""
                 },
                 {
+<<<<<<< Updated upstream
                     "name": "Move",
                     "type": "Button",
                     "id": "1d7b1102-ef8b-4804-8cd3-59b0b05d2d4d",
                     "expectedControlType": "Button",
+=======
+                    "name": "ControllerX",
+                    "type": "PassThrough",
+                    "id": "bd875850-6cd2-4e06-8551-790e3e1fd339",
+                    "expectedControlType": "Axis",
+>>>>>>> Stashed changes
                     "processors": "",
                     "interactions": ""
                 },
                 {
+<<<<<<< Updated upstream
                     "name": "Camera",
                     "type": "Button",
                     "id": "a7e8ae63-2344-4105-9427-b2847c0f8179",
                     "expectedControlType": "Button",
+=======
+                    "name": "ControllerY",
+                    "type": "PassThrough",
+                    "id": "447a46de-3e3d-4903-b8eb-21728ed667d8",
+                    "expectedControlType": "Axis",
+>>>>>>> Stashed changes
                     "processors": "",
                     "interactions": ""
                 }
@@ -87,6 +101,7 @@
                     "isPartOfComposite": true
                 },
                 {
+<<<<<<< Updated upstream
                     "name": "",
                     "id": "91ddf1ff-ece8-4af9-abc1-ba1657ce9b7b",
                     "path": "<Gamepad>/rightStick",
@@ -94,17 +109,145 @@
                     "processors": "",
                     "groups": "",
                     "action": "Camera",
+=======
+                    "name": "2D Vector",
+                    "id": "5d8b9b1f-a698-43af-b741-e0b78e55dfcb",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "1d46b30c-68fd-448f-9aa3-af40ec3b6ab3",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "b9f189d5-5b7b-4ed4-a401-a0ec8a7b4062",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "3b5e0186-8025-4cdf-8571-65af03e42007",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "4b24fb4d-9d38-4cdc-a110-281b961b5e45",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "77814e7c-d309-41d8-839d-2c39d158ec8e",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "1fd34678-8058-41ca-a859-361bae1779d4",
+                    "path": "<XInputController>/leftStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "6af6e552-c555-4bc6-8674-936c52b75625",
+                    "path": "<XInputController>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "91bc2074-3a56-4079-98ad-c34699fdc157",
+                    "path": "<XInputController>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "47a9ecc2-0da3-466d-b092-7b0b8ddabdb5",
+                    "path": "<XInputController>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Movement",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "7ad390bf-2297-4f09-a157-768c5af0e537",
+                    "path": "<Gamepad>/rightStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ControllerX",
+>>>>>>> Stashed changes
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
+<<<<<<< Updated upstream
                     "id": "96207936-9538-423e-9d5a-5f881d87ebe4",
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Move",
+=======
+                    "id": "4f17b3ce-9408-4cf2-a5e6-7f21d1907a57",
+                    "path": "<XInputController>/rightStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ControllerY",
+>>>>>>> Stashed changes
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

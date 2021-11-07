@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< Updated upstream:Assets/InputActions.cs.meta
-guid: 57433e2c67f16f949b73c0395208f1e0
-=======
-guid: f11564a52ddb7d34492c950146526f69
->>>>>>> Stashed changes:Assets/Scripts/InputActions.cs.meta
+guid: 1cf04a2fcbb02a248b6c7dcfcd27c81f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
