@@ -5,12 +5,14 @@ using UnityEngine;
 
 public class NoClip : MonoBehaviour
 {
+    public static NoClip instance;
     // Start is called before the first frame update
     public CharacterController controller;
     public bool canCollide;
     public GameObject[] walls;
     void Start()
     {
+        instance = this;
         controller = GetComponent<CharacterController>();
         SetCollision(canCollide);
         walls = GameObject.FindGameObjectsWithTag("Wall");
@@ -31,16 +33,11 @@ public class NoClip : MonoBehaviour
     }
 
     void FixedUpdate() {
-        if (Input.GetKeyDown("r"))
+        if (Input.GetKeyDown("r") || Input.GetKeyDown("joystick button 0"))
         {
             canCollide = !canCollide;
             Debug.Log("Toggled collision. Collision is now " + canCollide);
             SetCollision(canCollide);
         }
-        // else if (Input.GetKeyDown("t"))
-        // {
-        //     controller = GetComponent<CharacterController>();
-        //     controller.detectCollisions = true;
-        // }
     }
 }
