@@ -158,6 +158,31 @@ class MazeSector
         }
     }
 
+    public void AssignWallMaterial(int index, Material material)
+    {
+        string err = "Index is out of range for the respective sector type.";
+        quads[index].GetComponent<Renderer>().material = material;
+        mirrorQuads[index].GetComponent<Renderer>().material = material;
+
+        switch (type)
+        {
+            case 0:
+                if (index < 0 || index > 3)
+                    throw new ArgumentException(err);
+                break;
+            case 1:
+            case 2:
+                if (index < 0 || index > 2)
+                    throw new ArgumentException(err);
+                break;
+            case 3:
+            default:
+                if (index < 0 || index > 1)
+                    throw new ArgumentException(err);
+                break;
+        }
+    }
+
     public void SetVisited(bool visited)
     {
         this.visited = visited;
@@ -186,9 +211,12 @@ class MazeSector
 
 public class MazeGenerator : MonoBehaviour
 {
-    const int SIZE = 15;//the area of the grid (SIZE X SIZE)
+    //TODO refactor backtrack code
+    const int SIZE = 14;//the area of the grid (SIZE X SIZE)
     MazeSector[,] sectors = new MazeSector[SIZE, SIZE];
     GameObject plane, standardWall;
+
+    public Material northWall, eastWall, southWall, westWall;
 
     // Start is called before the first frame update
     void Start()
@@ -223,6 +251,67 @@ public class MazeGenerator : MonoBehaviour
                 sectors[r, c] = new MazeSector(type, standardWall,
                     c - SIZE / 2, r - SIZE / 2);
             }
+        }
+
+        //assign materials
+        int row = SIZE / 2, offset = row - ((SIZE % 2 == 0) ? 1 : 0);
+        //north
+        while(row < SIZE)
+        {
+            for(int c = offset; c < SIZE - offset; c++)
+            {
+                sectors[row, c].AssignWallMaterial(0, northWall);
+                sectors[c, row].AssignWallMaterial(1, eastWall);
+                if (c < SIZE - offset - 1)
+                {
+                    sectors[row, c].AssignWallMaterial(1, northWall);
+                    sectors[c, row].AssignWallMaterial(0, eastWall);
+                }
+            }
+            row++;
+            offset--;
+        }
+
+        //south
+        row = SIZE / 2 - 1;
+        offset = row;
+        while(row >= 0)
+        {
+            for(int c = offset; c < SIZE - offset; c++)
+            {
+                if (c < SIZE - offset - 1)
+                {
+                    sectors[row, c].AssignWallMaterial(1, southWall);
+                    if(c > offset)
+                        sectors[row, c].AssignWallMaterial(0, southWall);
+                }
+            }
+            row--;
+            offset--;
+        }
+        for (int c = 0; c < SIZE; c++)
+        {
+            sectors[0, c].AssignWallMaterial(2, southWall);
+            sectors[c, 0].AssignWallMaterial(3 - ((c > 0) ? 1 : 0), westWall);
+        }
+
+        //west
+        row = SIZE / 2 - 1;
+        offset = row;
+        while(row >= 0)
+        {
+            for(int c = offset; c < SIZE - offset; c++)
+            {
+                if(c < SIZE - offset - 1)
+                {
+                    sectors[c, row].AssignWallMaterial(0, westWall);
+                    if (row < SIZE / 2 - ((SIZE % 2 == 0) ? 1 : 0))
+                        sectors[c, row].AssignWallMaterial(1, westWall);
+                }
+            }
+
+            row--;
+            offset--;
         }
     }
 
