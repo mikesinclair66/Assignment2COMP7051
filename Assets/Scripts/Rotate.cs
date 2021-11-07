@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Rotate : MonoBehaviour
 {
@@ -13,6 +14,11 @@ public class Rotate : MonoBehaviour
 
         controls.Player.Rotate.performed += ctx => rotate = ctx.ReadValue<Vector2>();
         controls.Player.Rotate.canceled += ctx => rotate = Vector2.zero;
+    }
+
+    void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
