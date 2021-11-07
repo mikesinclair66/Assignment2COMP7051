@@ -12,7 +12,7 @@ public class NoClip : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        canCollide = true;
+        SetCollision(canCollide);
         walls = GameObject.FindGameObjectsWithTag("Wall");
     }
 
@@ -22,15 +22,20 @@ public class NoClip : MonoBehaviour
         
     }
 
+    public void SetCollision(bool canCollide)
+    {
+        foreach (GameObject wall in walls)
+        {
+            Physics.IgnoreCollision(wall.GetComponent<Collider>(), GetComponent<Collider>(), !canCollide);
+        }
+    }
+
     void FixedUpdate() {
         if (Input.GetKeyDown("r"))
         {
             canCollide = !canCollide;
             Debug.Log("Toggled collision. Collision is now " + canCollide);
-            foreach (GameObject wall in walls)
-            {
-                Physics.IgnoreCollision(wall.GetComponent<Collider>(), GetComponent<Collider>(), !canCollide);
-            }
+            SetCollision(canCollide);
         }
         // else if (Input.GetKeyDown("t"))
         // {
