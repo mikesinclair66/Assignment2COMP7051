@@ -244,7 +244,7 @@ class MazeSector
 public class MazeGenerator : MonoBehaviour
 {
     //TODO refactor backtrack code
-    const int SIZE = 6;//the area of the grid (SIZE X SIZE)
+    const int SIZE = 5;//the area of the grid (SIZE X SIZE)
     MazeSector[,] sectors = new MazeSector[SIZE, SIZE];
     GameObject plane, standardWall;
 
@@ -260,7 +260,7 @@ public class MazeGenerator : MonoBehaviour
         InitSectors();
         standardWall.SetActive(false);
         GeneratePath();
-        GameObject.Find("Enemy").GetComponent<DudeEnemy>().Init();
+        //GameObject.Find("Enemy").GetComponent<DudeEnemy>().Init();
         /*for(int r = 0; r < SIZE; r++)
         {
             for(int c = 0; c < SIZE; c++)
