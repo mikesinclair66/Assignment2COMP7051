@@ -158,6 +158,38 @@ class MazeSector
         }
     }
 
+    public bool IsWallHidden(int index)
+    {
+        switch (type)
+        {
+            case 0:
+                return hidden[index];
+                break;
+            case 1:
+                if (index <= 1)
+                    return hidden[index];
+                else if (index == 2)
+                    return true;
+                else if (index == 3)
+                    return hidden[2];
+                break;
+            case 2:
+                if (index == 3)
+                    return true;
+                else
+                    return hidden[index];
+                break;
+            case 3:
+            default:
+                if (index <= 1)
+                    return hidden[index];
+                else
+                    return true;
+        }
+
+        return true;
+    }
+
     public void AssignWallMaterial(int index, Material material)
     {
         string err = "Index is out of range for the respective sector type.";
@@ -212,7 +244,7 @@ class MazeSector
 public class MazeGenerator : MonoBehaviour
 {
     //TODO refactor backtrack code
-    const int SIZE = 14;//the area of the grid (SIZE X SIZE)
+    const int SIZE = 6;//the area of the grid (SIZE X SIZE)
     MazeSector[,] sectors = new MazeSector[SIZE, SIZE];
     GameObject plane, standardWall;
 
@@ -228,6 +260,15 @@ public class MazeGenerator : MonoBehaviour
         InitSectors();
         standardWall.SetActive(false);
         GeneratePath();
+        GameObject.Find("Enemy").GetComponent<DudeEnemy>().Init();
+        /*for(int r = 0; r < SIZE; r++)
+        {
+            for(int c = 0; c < SIZE; c++)
+            {
+                Debug.Log("R: " + r + ", C: " + c + ", valid: {" + IsSectorHidden(r, c, 0) + IsSectorHidden(r, c, 1)
+                    + IsSectorHidden(r, c, 2) + IsSectorHidden(r, c, 3));
+            }
+        }*/
         //sectors[0, 0].SetWallHidden(3, true);
         //sectors[SIZE - 1, SIZE - 1].SetWallHidden(1, true);
     }
@@ -458,5 +499,28 @@ public class MazeGenerator : MonoBehaviour
                 sectors[y, --x].SetWallHidden(1, true);
         } while (x != SIZE - 1 || y != SIZE - 1 ||
             !sectors[SIZE - 2, SIZE - 1].IsVisited() || !sectors[SIZE - 1, SIZE - 2].IsVisited());
+    }
+
+    public int[,] GetPath()
+    {
+        int[,] path = new int[SIZE, SIZE];
+        return path;
+    }
+
+    public Vector3 GetStartLocation()
+    {
+        return new Vector3(15 - 15 / SIZE, 0, 15 - 15 / SIZE);
+    }
+
+    public int GetSize()
+    {
+        return SIZE;
+    }
+
+    public bool IsSectorHidden(int row, int col, int index)
+    {
+        if (row == SIZE - 1 && col == SIZE - 1 && index == 1)
+            return false;
+        return sectors[row, col].IsWallHidden(index);
     }
 }
