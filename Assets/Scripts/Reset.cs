@@ -9,7 +9,7 @@ public class Reset : MonoBehaviour
 
     private Quaternion playerRotation, enemyRotation;
 
-    private Vector3 playerPosition, enemyPosition;
+    public Vector3 playerPosition, enemyPosition;
 
     //private NoClip _noClip;
     // Start is called before the first frame update
@@ -32,11 +32,16 @@ public class Reset : MonoBehaviour
             Debug.Log("Reset Pos: " + playerPosition);
             Debug.Log("Reset Rot: " + playerRotation);
 
-            player.transform.position = playerPosition;
-            player.transform.rotation = playerRotation;
-            enemy.transform.position = enemyPosition;
-            enemy.transform.rotation = enemyRotation;
+            resetGame();
             //_noClip.SetCollision(true);
         }
+    }
+
+    public void resetGame()
+    {
+        player.transform.position = playerPosition;
+        player.transform.rotation = playerRotation;
+        enemy.transform.position = enemyPosition;
+        enemy.transform.rotation = enemyRotation;
     }
 }

@@ -28,6 +28,30 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "ThrowBall",
+                    "type": "Button",
+                    "id": "6f76f3b2-736c-402b-8766-3e9c057f9028",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "SaveGame",
+                    "type": "Button",
+                    "id": "85d7b6ed-46bc-4a28-b202-29bd43773173",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "LoadGame",
+                    "type": "Button",
+                    "id": "b3a90c51-acb7-4372-b99c-79f26948e0c6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -160,6 +184,39 @@
                     "processors": "",
                     "groups": "",
                     "action": "Rotate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c71d2d67-3033-4280-b6ad-4e424232e38e",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ThrowBall",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1a80ed36-a1cd-4878-912d-26019a55297d",
+                    "path": "<Keyboard>/j",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SaveGame",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "475e82ce-8775-4c12-ae97-ddcac56ecb15",
+                    "path": "<Keyboard>/k",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LoadGame",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

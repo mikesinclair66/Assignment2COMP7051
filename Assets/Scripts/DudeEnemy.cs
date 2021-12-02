@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,14 @@ public class DudeEnemy : MonoBehaviour
     public bool isAngered;
 
     public NavMeshAgent _agent;
+
+    public int maxHealth;
+    public int health;
+
+    private void Start()
+    {
+        health = maxHealth;
+    }
 
     void Update()
     {
@@ -39,5 +48,27 @@ public class DudeEnemy : MonoBehaviour
             anim.StopPlayback();
             _agent.isStopped = true;
         }
+    }
+
+    private void FixedUpdate()
+    {
+        if (Distance < 3f)
+        {
+            killPlayer();
+        }
+    }
+
+    public void TakeDamage()
+    {
+        health--;
+        if (health <= 0)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
+    void killPlayer()
+    {
+        GameObject.Find("GameMaster").GetComponent<Reset>().resetGame();
     }
 }

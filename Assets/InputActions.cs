@@ -41,6 +41,30 @@ public class @InputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ThrowBall"",
+                    ""type"": ""Button"",
+                    ""id"": ""6f76f3b2-736c-402b-8766-3e9c057f9028"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""SaveGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""85d7b6ed-46bc-4a28-b202-29bd43773173"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""LoadGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""b3a90c51-acb7-4372-b99c-79f26948e0c6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -175,6 +199,39 @@ public class @InputActions : IInputActionCollection, IDisposable
                     ""action"": ""Rotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c71d2d67-3033-4280-b6ad-4e424232e38e"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ThrowBall"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1a80ed36-a1cd-4878-912d-26019a55297d"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SaveGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""475e82ce-8775-4c12-ae97-ddcac56ecb15"",
+                    ""path"": ""<Keyboard>/k"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LoadGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -186,6 +243,9 @@ public class @InputActions : IInputActionCollection, IDisposable
         m_Player_Movement = m_Player.FindAction("Movement", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Rotate = m_Player.FindAction("Rotate", throwIfNotFound: true);
+        m_Player_ThrowBall = m_Player.FindAction("ThrowBall", throwIfNotFound: true);
+        m_Player_SaveGame = m_Player.FindAction("SaveGame", throwIfNotFound: true);
+        m_Player_LoadGame = m_Player.FindAction("LoadGame", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -238,6 +298,9 @@ public class @InputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Movement;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Rotate;
+    private readonly InputAction m_Player_ThrowBall;
+    private readonly InputAction m_Player_SaveGame;
+    private readonly InputAction m_Player_LoadGame;
     public struct PlayerActions
     {
         private @InputActions m_Wrapper;
@@ -245,6 +308,9 @@ public class @InputActions : IInputActionCollection, IDisposable
         public InputAction @Movement => m_Wrapper.m_Player_Movement;
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Rotate => m_Wrapper.m_Player_Rotate;
+        public InputAction @ThrowBall => m_Wrapper.m_Player_ThrowBall;
+        public InputAction @SaveGame => m_Wrapper.m_Player_SaveGame;
+        public InputAction @LoadGame => m_Wrapper.m_Player_LoadGame;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -263,6 +329,15 @@ public class @InputActions : IInputActionCollection, IDisposable
                 @Rotate.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotate;
                 @Rotate.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotate;
                 @Rotate.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotate;
+                @ThrowBall.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrowBall;
+                @ThrowBall.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrowBall;
+                @ThrowBall.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnThrowBall;
+                @SaveGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSaveGame;
+                @SaveGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSaveGame;
+                @SaveGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSaveGame;
+                @LoadGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadGame;
+                @LoadGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadGame;
+                @LoadGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadGame;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -276,6 +351,15 @@ public class @InputActions : IInputActionCollection, IDisposable
                 @Rotate.started += instance.OnRotate;
                 @Rotate.performed += instance.OnRotate;
                 @Rotate.canceled += instance.OnRotate;
+                @ThrowBall.started += instance.OnThrowBall;
+                @ThrowBall.performed += instance.OnThrowBall;
+                @ThrowBall.canceled += instance.OnThrowBall;
+                @SaveGame.started += instance.OnSaveGame;
+                @SaveGame.performed += instance.OnSaveGame;
+                @SaveGame.canceled += instance.OnSaveGame;
+                @LoadGame.started += instance.OnLoadGame;
+                @LoadGame.performed += instance.OnLoadGame;
+                @LoadGame.canceled += instance.OnLoadGame;
             }
         }
     }
@@ -285,5 +369,8 @@ public class @InputActions : IInputActionCollection, IDisposable
         void OnMovement(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnRotate(InputAction.CallbackContext context);
+        void OnThrowBall(InputAction.CallbackContext context);
+        void OnSaveGame(InputAction.CallbackContext context);
+        void OnLoadGame(InputAction.CallbackContext context);
     }
 }
