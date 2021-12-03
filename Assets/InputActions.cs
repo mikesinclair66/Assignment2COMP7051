@@ -89,6 +89,14 @@ public class @InputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ToggleFlashlight"",
+                    ""type"": ""Button"",
+                    ""id"": ""47610b03-2f07-41fb-bbe1-a33de4b671d1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -289,6 +297,17 @@ public class @InputActions : IInputActionCollection, IDisposable
                     ""action"": ""ToggleFog"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0c19682e-c504-4d13-bc8a-0432e379310a"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleFlashlight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -306,6 +325,7 @@ public class @InputActions : IInputActionCollection, IDisposable
         m_Player_ToggleMusic = m_Player.FindAction("ToggleMusic", throwIfNotFound: true);
         m_Player_ToggleDayNight = m_Player.FindAction("ToggleDayNight", throwIfNotFound: true);
         m_Player_ToggleFog = m_Player.FindAction("ToggleFog", throwIfNotFound: true);
+        m_Player_ToggleFlashlight = m_Player.FindAction("ToggleFlashlight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -364,6 +384,7 @@ public class @InputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_ToggleMusic;
     private readonly InputAction m_Player_ToggleDayNight;
     private readonly InputAction m_Player_ToggleFog;
+    private readonly InputAction m_Player_ToggleFlashlight;
     public struct PlayerActions
     {
         private @InputActions m_Wrapper;
@@ -377,6 +398,7 @@ public class @InputActions : IInputActionCollection, IDisposable
         public InputAction @ToggleMusic => m_Wrapper.m_Player_ToggleMusic;
         public InputAction @ToggleDayNight => m_Wrapper.m_Player_ToggleDayNight;
         public InputAction @ToggleFog => m_Wrapper.m_Player_ToggleFog;
+        public InputAction @ToggleFlashlight => m_Wrapper.m_Player_ToggleFlashlight;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -413,6 +435,9 @@ public class @InputActions : IInputActionCollection, IDisposable
                 @ToggleFog.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleFog;
                 @ToggleFog.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleFog;
                 @ToggleFog.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleFog;
+                @ToggleFlashlight.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleFlashlight;
+                @ToggleFlashlight.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleFlashlight;
+                @ToggleFlashlight.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleFlashlight;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -444,6 +469,9 @@ public class @InputActions : IInputActionCollection, IDisposable
                 @ToggleFog.started += instance.OnToggleFog;
                 @ToggleFog.performed += instance.OnToggleFog;
                 @ToggleFog.canceled += instance.OnToggleFog;
+                @ToggleFlashlight.started += instance.OnToggleFlashlight;
+                @ToggleFlashlight.performed += instance.OnToggleFlashlight;
+                @ToggleFlashlight.canceled += instance.OnToggleFlashlight;
             }
         }
     }
@@ -459,5 +487,6 @@ public class @InputActions : IInputActionCollection, IDisposable
         void OnToggleMusic(InputAction.CallbackContext context);
         void OnToggleDayNight(InputAction.CallbackContext context);
         void OnToggleFog(InputAction.CallbackContext context);
+        void OnToggleFlashlight(InputAction.CallbackContext context);
     }
 }
