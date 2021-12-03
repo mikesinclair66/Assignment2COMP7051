@@ -15,6 +15,7 @@ public class DudeEnemy : MonoBehaviour
 
     public int maxHealth;
     public int health;
+    public AudioSource deathSound;
 
     private void Start()
     {
@@ -50,25 +51,13 @@ public class DudeEnemy : MonoBehaviour
         }
     }
 
-    private void FixedUpdate()
-    {
-        if (Distance < 3f)
-        {
-            killPlayer();
-        }
-    }
-
     public void TakeDamage()
     {
         health--;
         if (health <= 0)
         {
+            AudioSource.PlayClipAtPoint(deathSound.clip, transform.position);
             gameObject.SetActive(false);
         }
-    }
-
-    void killPlayer()
-    {
-        GameObject.Find("GameMaster").GetComponent<Reset>().resetGame();
     }
 }

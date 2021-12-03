@@ -13,6 +13,7 @@ public class GameMaster : MonoBehaviour
     public GameObject player;
     public float killCooldown;
     private float currentCountdown;
+    public AudioSource respawnSound;
     public Reset reset;
     
     public int score;
@@ -49,7 +50,6 @@ public class GameMaster : MonoBehaviour
         if (!enemy.activeSelf && !checkIfEnemyDead)
         {
             score++;
-            SetCurrentScore(score);
             checkIfEnemyDead = true;
             currentCountdown = killCooldown;
         }
@@ -58,7 +58,7 @@ public class GameMaster : MonoBehaviour
         {
             enemy.SetActive(true);
             resetEnemy();
-            enemy.GetComponent<DudeEnemy>().health = enemy.GetComponent<DudeEnemy>().maxHealth;
+            AudioSource.PlayClipAtPoint(respawnSound.clip, enemy.transform.position);
             checkIfEnemyDead = false;
         }
     }
@@ -98,15 +98,7 @@ public class GameMaster : MonoBehaviour
         spawnPoint.x += xOffset;
         spawnPoint.z += zOffset;
         enemy.transform.position = spawnPoint;
-    }
-    
-    public int GetCurrentScore()
-    {
-        return PlayerPrefs.GetInt("CurrentScore");
-    }
-    public void SetCurrentScore(int num)
-    {
-        PlayerPrefs.SetInt("CurrentScore", num);
+        enemy.GetComponent<DudeEnemy>().health = enemy.GetComponent<DudeEnemy>().maxHealth;
     }
 
     public void LoadPositions()
@@ -118,6 +110,7 @@ public class GameMaster : MonoBehaviour
             GameData data =(GameData)bf.Deserialize (fs);
             playerSpawn = new Vector3(data.playerPosition[0], data.playerPosition[1], data.playerPosition[2]);
             enemySpawn = new Vector3(data.enemyPosition[0], data.enemyPosition[1], data.enemyPosition[2]);
+            score = data.score;
             requestSave = true;
             fs.Close();
         }
@@ -141,6 +134,7 @@ public class GameMaster : MonoBehaviour
             enemy.transform.position.y,
             enemy.transform.position.z
         };
+        data.score = score;
         bf.Serialize (fs, data);
         fs.Close ();
     }
@@ -151,4 +145,5 @@ class GameData
 {
     public List<float> playerPosition;
     public List<float> enemyPosition;
+    public int score;
 };

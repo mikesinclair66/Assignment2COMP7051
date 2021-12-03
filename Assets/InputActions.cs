@@ -65,6 +65,30 @@ public class @InputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ToggleMusic"",
+                    ""type"": ""Button"",
+                    ""id"": ""068a0f14-5c65-4709-9ef0-de937cd3ace5"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ToggleDayNight"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d82473b-1be4-4404-b57f-7f1a6dc6d440"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ToggleFog"",
+                    ""type"": ""Button"",
+                    ""id"": ""bbc94a71-ff70-4a51-b3e9-6201af2ea284"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -232,6 +256,39 @@ public class @InputActions : IInputActionCollection, IDisposable
                     ""action"": ""LoadGame"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e3d924cb-9930-489c-bfdb-1828a622e2c2"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleMusic"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d43cd000-24e9-45b2-81c1-498bc15220df"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleDayNight"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""730393a8-9afb-48f3-a6a9-368b3a611586"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleFog"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -246,6 +303,9 @@ public class @InputActions : IInputActionCollection, IDisposable
         m_Player_ThrowBall = m_Player.FindAction("ThrowBall", throwIfNotFound: true);
         m_Player_SaveGame = m_Player.FindAction("SaveGame", throwIfNotFound: true);
         m_Player_LoadGame = m_Player.FindAction("LoadGame", throwIfNotFound: true);
+        m_Player_ToggleMusic = m_Player.FindAction("ToggleMusic", throwIfNotFound: true);
+        m_Player_ToggleDayNight = m_Player.FindAction("ToggleDayNight", throwIfNotFound: true);
+        m_Player_ToggleFog = m_Player.FindAction("ToggleFog", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -301,6 +361,9 @@ public class @InputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_ThrowBall;
     private readonly InputAction m_Player_SaveGame;
     private readonly InputAction m_Player_LoadGame;
+    private readonly InputAction m_Player_ToggleMusic;
+    private readonly InputAction m_Player_ToggleDayNight;
+    private readonly InputAction m_Player_ToggleFog;
     public struct PlayerActions
     {
         private @InputActions m_Wrapper;
@@ -311,6 +374,9 @@ public class @InputActions : IInputActionCollection, IDisposable
         public InputAction @ThrowBall => m_Wrapper.m_Player_ThrowBall;
         public InputAction @SaveGame => m_Wrapper.m_Player_SaveGame;
         public InputAction @LoadGame => m_Wrapper.m_Player_LoadGame;
+        public InputAction @ToggleMusic => m_Wrapper.m_Player_ToggleMusic;
+        public InputAction @ToggleDayNight => m_Wrapper.m_Player_ToggleDayNight;
+        public InputAction @ToggleFog => m_Wrapper.m_Player_ToggleFog;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -338,6 +404,15 @@ public class @InputActions : IInputActionCollection, IDisposable
                 @LoadGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadGame;
                 @LoadGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadGame;
                 @LoadGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnLoadGame;
+                @ToggleMusic.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleMusic;
+                @ToggleMusic.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleMusic;
+                @ToggleMusic.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleMusic;
+                @ToggleDayNight.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleDayNight;
+                @ToggleDayNight.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleDayNight;
+                @ToggleDayNight.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleDayNight;
+                @ToggleFog.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleFog;
+                @ToggleFog.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleFog;
+                @ToggleFog.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnToggleFog;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -360,6 +435,15 @@ public class @InputActions : IInputActionCollection, IDisposable
                 @LoadGame.started += instance.OnLoadGame;
                 @LoadGame.performed += instance.OnLoadGame;
                 @LoadGame.canceled += instance.OnLoadGame;
+                @ToggleMusic.started += instance.OnToggleMusic;
+                @ToggleMusic.performed += instance.OnToggleMusic;
+                @ToggleMusic.canceled += instance.OnToggleMusic;
+                @ToggleDayNight.started += instance.OnToggleDayNight;
+                @ToggleDayNight.performed += instance.OnToggleDayNight;
+                @ToggleDayNight.canceled += instance.OnToggleDayNight;
+                @ToggleFog.started += instance.OnToggleFog;
+                @ToggleFog.performed += instance.OnToggleFog;
+                @ToggleFog.canceled += instance.OnToggleFog;
             }
         }
     }
@@ -372,5 +456,8 @@ public class @InputActions : IInputActionCollection, IDisposable
         void OnThrowBall(InputAction.CallbackContext context);
         void OnSaveGame(InputAction.CallbackContext context);
         void OnLoadGame(InputAction.CallbackContext context);
+        void OnToggleMusic(InputAction.CallbackContext context);
+        void OnToggleDayNight(InputAction.CallbackContext context);
+        void OnToggleFog(InputAction.CallbackContext context);
     }
 }

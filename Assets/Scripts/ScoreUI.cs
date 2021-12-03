@@ -9,6 +9,6 @@ public class ScoreUI : MonoBehaviour
     public GameMaster gm;
     void Update()
     {
-        text.text = "Score: " + gm.GetCurrentScore();
+        text.text = "Score: " + gm.score;
     }
 }

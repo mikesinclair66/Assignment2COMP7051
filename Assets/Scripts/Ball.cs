@@ -9,6 +9,8 @@ public class Ball : MonoBehaviour
     public int force;
     private Vector3 forward;
     private bool requestApplyForce;
+    private bool requestDestroy;
+    public AudioSource bounceSound;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -32,6 +34,12 @@ public class Ball : MonoBehaviour
     void OnCollisionEnter(Collision col) {
         if (col.gameObject.tag == "Enemy") {
             col.gameObject.GetComponent<DudeEnemy>().TakeDamage();
+            Destroy(gameObject);
+            return;
+        }
+        if (col.gameObject.tag == "Wall" || col.gameObject.tag == "Floor")
+        {
+            bounceSound.Play();
         }
     }
 }

@@ -43,5 +43,6 @@ public class Reset : MonoBehaviour
         player.transform.rotation = playerRotation;
         enemy.transform.position = enemyPosition;
         enemy.transform.rotation = enemyRotation;
+        enemy.GetComponent<DudeEnemy>().health = enemy.GetComponent<DudeEnemy>().maxHealth;
     }
 }
