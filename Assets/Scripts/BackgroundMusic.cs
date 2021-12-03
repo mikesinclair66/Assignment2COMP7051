@@ -18,6 +18,8 @@ public class BackgroundMusic : MonoBehaviour
     public GameObject enemy;
     private float enemyDistance;
 
+    public GameObject fogObj;
+
     private void Awake()
     {
         inputActions = new InputActions();
@@ -98,11 +100,13 @@ public class BackgroundMusic : MonoBehaviour
         {
             isFog = false;
             volume = 1f;
+            fogObj.SetActive(false);
         }
         else
         {
             isFog = true;
             volume = 0.5f;
+            fogObj.SetActive(true);
         }
     }
 }
