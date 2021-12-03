@@ -20,6 +20,9 @@ public class BackgroundMusic : MonoBehaviour
 
     public GameObject fogObj;
 
+    public GameObject day;
+    public GameObject night;
+
     private void Awake()
     {
         inputActions = new InputActions();
@@ -85,12 +88,16 @@ public class BackgroundMusic : MonoBehaviour
             isDaytime = false;
             currentMusic.Stop();
             currentMusic = nightMusic;
+            day.SetActive(false);
+            night.SetActive(true);
         }
         else
         {
             isDaytime = true;
             currentMusic.Stop();
             currentMusic = dayMusic;
+            day.SetActive(true);
+            night.SetActive(false);
         }
     }
 
