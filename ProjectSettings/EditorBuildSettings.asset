@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/PongGame.unity
-    guid: 98690889491e35549a125f31e15831c2
+    path: Assets/Scenes/TestMaze2.unity
+    guid: 5e43962254cc68e4f94cde407d1c89be
+  - enabled: 1
+    path: Assets/Scenes/Computer.unity
+    guid: 200c9d0f65aed784f97d7fdf0cba9850
   m_configObjects: {}
