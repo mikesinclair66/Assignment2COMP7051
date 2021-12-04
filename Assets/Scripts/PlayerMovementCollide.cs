@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovementCollide : MonoBehaviour
 {
@@ -51,6 +52,10 @@ public class PlayerMovementCollide : MonoBehaviour
             {
                 wallHitSound.Play();
             }
+        }
+        if(hit.gameObject.tag == "Portal")
+        {
+            SceneManager.LoadScene("Computer", LoadSceneMode.Single);//or Additive
         }
     }
 

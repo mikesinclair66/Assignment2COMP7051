@@ -10,12 +10,18 @@ public class NoClip : MonoBehaviour
     public CharacterController controller;
     public bool canCollide;
     public GameObject[] walls;
+    public GameObject[] portals;
     void Start()
     {
         instance = this;
         controller = GetComponent<CharacterController>();
         SetCollision(canCollide);
         walls = GameObject.FindGameObjectsWithTag("Wall");
+        portals = GameObject.FindGameObjectsWithTag("Portal");
+        foreach(GameObject p in portals)
+        {
+            Physics.IgnoreCollision(p.GetComponent<Collider>(), GetComponent<Collider>(), false);
+        }
     }
 
     // Update is called once per frame
