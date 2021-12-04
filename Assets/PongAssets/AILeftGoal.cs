@@ -28,7 +28,7 @@ public class AILeftGoal : MonoBehaviour
             score.rightScore++;
             if (score.rightScore == 5)
             {
-                SceneManager.LoadScene("AIGameOver");
+                SceneManager.LoadScene("TestMaze2");
             }
         }
     }

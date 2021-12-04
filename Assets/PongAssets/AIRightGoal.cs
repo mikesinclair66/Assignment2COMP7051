@@ -28,7 +28,7 @@ public class AIRightGoal : MonoBehaviour
             score.leftScore++;
             if (score.leftScore == 5)
             {
-                SceneManager.LoadScene("AIGameOver");
+                SceneManager.LoadScene("TestMaze2");
             }
         }
     }

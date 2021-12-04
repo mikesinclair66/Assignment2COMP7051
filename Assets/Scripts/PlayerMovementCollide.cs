@@ -55,7 +55,7 @@ public class PlayerMovementCollide : MonoBehaviour
         }
         if(hit.gameObject.tag == "Portal")
         {
-            SceneManager.LoadScene("PongGame", LoadSceneMode.Single);//or Additive
+            SceneManager.LoadScene("Computer", LoadSceneMode.Single);//or Additive
         }
     }
 
